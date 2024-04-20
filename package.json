@@ -1,0 +1,16 @@
+{
+  "name": "size-table",
+  "version": "1.0.0",
+  "description": "Size Table Project",
+  "main": "main.js",
+  "scripts": {
+    "build": "browserify main.js -o bundle.js",
+    "watch": "watchify main.js -o bundle.js -v"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "table-builder": "^2.1.1"
+  }
+}

@@ -1,4 +1,4 @@
-const Table = require('table-builder')
+const Table = require('table-builder');
 
 const SIZE_TABLE_HEADER = '라벨 사이즈'
 const parseHeaders = (data) => {
@@ -26,12 +26,16 @@ const getSizeTable = (rawData) => {
     const headers = parseHeaders(rawData);
     const data = parseData(headers, rawData);
 
-    return (
-        (new Table({'class': 'size-table'}))
-            .setHeaders(headers)
-            .setData(data)
-            .render()
-    );
+    try {
+    return (new Table({'class': 'size-table'}))
+        .setHeaders(headers)
+        .setData(data)
+        .render();
+    }
+    catch (e) {
+        alert('Fail to create Table');
+        return undefined;
+    }
 }
 
 module.exports = { getSizeTable }

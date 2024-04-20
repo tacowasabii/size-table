@@ -1,15 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Size Table</title>
+    <title>Size Table Example</title>
+    <style>
+        .container {
+            display: flex;
+        }
+        .input-section {
+            flex: 1;
+            padding-right: 20px;
+        }
+        .output-section {
+            flex: 1;
+        }
+        .size-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .size-table th, .size-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .size-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-<p>
-    hello world
-</p>
+<div class="container">
+    <div class="input-section">
+        <div>
+            <label for="json-input">JSON 데이터 입력:</label><br>
+            <textarea id="json-input" rows="5" cols="50"></textarea>
+            <button onclick="generateTable()">테이블 생성</button>
+        </div>
+        <p>예시 데이터:</p>
+        <pre>
+{
+  "S": {
+    "총장": "46.4",
+    "허리(포켓 달리는 위치)": "36.5",
+    "엉덩이": "43.5"
+  },
+  "M": {
+    "총장": "48.4",
+    "허리(포켓 달리는 위치)": "38.6",
+    "엉덩이": "45.5"
+  }
+}
+            </pre>
+        <button onclick="applyExample(0)">Apply</button>
+        <pre>
+{
+  "XS/S": {
+    "총기장": "81.5",
+    "어깨너비": "39",
+    "가슴너비": "39",
+    "허리": "33",
+    "힙너비": "43.5",
+    "소매기장": "44.5"
+  },
+  "S/M": {
+    "총기장": "83",
+    "어깨너비": "41",
+    "가슴너비": "39",
+    "허리": "35",
+    "힙너비": "45.5",
+    "소매기장": "44.5"
+  }
+}
+            </pre>
+        <button onclick="applyExample(1)">Apply</button>
+    </div>
+    <div class="output-section">
+        <h3>결과:</h3>
+        <div id="table-container"></div>
+    </div>
+</div>
+
+<script src="bundle.js"></script>
+<script>
+    const examples = [
+        `{
+  "S": {
+    "총장": "46.4",
+    "허리(포켓 달리는 위치)": "36.5",
+    "엉덩이": "43.5"
+  },
+  "M": {
+    "총장": "48.4",
+    "허리(포켓 달리는 위치)": "38.6",
+    "엉덩이": "45.5"
+  }
+}`,
+        `{
+  "XS/S": {
+    "총기장": "81.5",
+    "어깨너비": "39",
+    "가슴너비": "39",
+    "허리": "33",
+    "힙너비": "43.5",
+    "소매기장": "44.5"
+  },
+  "S/M": {
+    "총기장": "83",
+    "어깨너비": "41",
+    "가슴너비": "39",
+    "허리": "35",
+    "힙너비": "45.5",
+    "소매기장": "44.5"
+  }
+}`
+    ];
+
+    function applyExample(index) {
+        document.getElementById('json-input').value = examples[index];
+    }
+
+    function generateTable() {
+        const jsonInput = document.getElementById('json-input').value;
+
+        if (jsonInput.trim() === '') {
+            alert('JSON 데이터를 입력해주세요.');
+            return;
+        }
+
+        try {
+            const data = JSON.parse(jsonInput);
+            const table = getSizeTable(data);
+
+            if (table !== '') {
+                document.getElementById('table-container').innerHTML = table;
+            }
+        } catch (error) {
+            alert('유효한 JSON 형식이 아닙니다.');
+        }
+    }
+</script>
 </body>
 </html>
