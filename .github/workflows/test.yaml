@@ -17,9 +17,8 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm test
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD }}
-        uses: Ilshidur/action-discord@master
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v5.3.0
         with:
-          args: 'PR 테스트 결과: ${{ job.status }}'
+          webhook-url: ${{ secrets.DISCORD }}
+          content: "Test"
