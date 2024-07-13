@@ -5,12 +5,17 @@
   "main": "main.js",
   "scripts": {
     "build": "browserify main.js -o bundle.js",
-    "watch": "watchify main.js -o bundle.js -v"
+    "watch": "watchify main.js -o bundle.js -v",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "table-builder": "^2.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
