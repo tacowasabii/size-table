@@ -47,8 +47,6 @@ describe("getSizeTable", () => {
 
     expect(result).toBeUndefined();
     expect(consoleSpy).toHaveBeenCalledWith("Fail to create Table");
-    expect(false).toBe(true);
-
     consoleSpy.mockRestore();
   });
 });
