@@ -15,10 +15,14 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: npm ci
-      - name: Run tests
+      - name: Run tests with coverage
         id: run-tests
-        run: npm test
+        run: npm test -- --coverage
         continue-on-error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
         if: always()
@@ -34,3 +38,4 @@ jobs:
             Status: ${{ steps.run-tests.outcome == 'success' && '✅ 성공' || '❌ 실패' }}
             
             [Actions에서 자세히 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Codecov에서 커버리지 확인](https://codecov.io/gh/${{ github.repository }})
