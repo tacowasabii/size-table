@@ -16,10 +16,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run tests
+        id: run-tests
         run: npm test
         continue-on-error: true
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
+        if: always()
         with:
           webhook-url: ${{ secrets.DISCORD }}
-          content: "Test"
+          content: |
+            **PR 테스트 결과**
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.head_ref }}
+            Commit: [${{ github.sha }}](${{ github.event.pull_request.html_url }})
+            Author: ${{ github.actor }}
+            
+            Status: ${{ steps.run-tests.outcome == 'success' && '✅ 성공' || '❌ 실패' }}
+            
+            [Actions에서 자세히 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
