@@ -2,7 +2,7 @@ name: PR Test
 
 on:
   pull_request:
-    branches: [ main ]  # main 브랜치로의 PR에 대해 실행
+    branches: [ main ]
 
 jobs:
   test:
@@ -12,8 +12,30 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'  # 프로젝트에 맞는 Node.js 버전 선택
+          node-version: '18'
       - name: Install dependencies
         run: npm ci
-      - name: Run tests
-        run: npm test
+      - name: Run tests with coverage
+        id: run-tests
+        run: npm test -- --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v5.3.0
+        if: always()
+        with:
+          webhook-url: ${{ secrets.DISCORD }}
+          content: |
+            **PR 테스트 결과**
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.head_ref }}
+            Commit: [${{ github.sha }}](${{ github.event.pull_request.html_url }})
+            Author: ${{ github.actor }}
+            
+            Status: ${{ job.status == 'success' && '✅ 성공' || '❌ 실패' }}
+            
+            [Actions에서 자세히 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Codecov에서 커버리지 확인](https://codecov.io/gh/${{ github.repository }})
